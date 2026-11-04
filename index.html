@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kurozen Coffee</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: transparent;
+  color: #6C4637;
+}
+
+.carousel {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.track::-webkit-scrollbar { display: none; }
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  padding: 20px 18px;
+  text-align: center;
+}
+
+.product-visual {
+  height: 300px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.product-visual img {
+  position: absolute;
+  max-width: 85%;
+  max-height: 95%;
+  object-fit: contain;
+  transition: opacity 0.35s ease;
+}
+
+.beans { opacity: 0; }
+.product-visual.revealed .pouch { opacity: 0; }
+.product-visual.revealed .beans { opacity: 1; }
+
+.hint {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+.product-name {
+  font-size: 25px;
+  margin: 12px 0 6px;
+  font-weight: 700;
+}
+
+.product-notes {
+  font-size: 13px;
+  line-height: 1.5;
+  max-width: 300px;
+  margin: 0 auto 18px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.actions a {
+  text-decoration: none;
+  padding: 12px 20px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  border: 1px solid #6C4637;
+  color: #6C4637;
+}
+
+.actions .buy {
+  background: #6C4637;
+  color: white;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 8px 0 18px;
+}
+
+.navigation button {
+  border: 0;
+  background: none;
+  color: #6C4637;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.dots {
+  display: flex;
+  gap: 7px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c8b8ae;
+}
+
+.dot.active { background: #6C4637; }
+
+@media (max-width: 480px) {
+  .product-visual { height: 270px; }
+  .product-name { font-size: 23px; }
+}
+</style>
+</head>
+
+<body>
+<div class="carousel">
+  <div class="track" id="track">
+
+    <div class="slide">
+      <div class="product-visual">
+        <img class="beans" src="assets/beans-1.png" alt="Coffee beans">
+        <img class="pouch" src="assets/pouch-1.png" alt="Coffee pouch">
+      </div>
+      <div class="hint">TAP TO REVEAL THE BEANS</div>
+      <div class="product-name">Blend 01</div>
+      <div class="product-notes">Add your tasting notes here.</div>
+      <div class="actions">
+        <a href="#">ADD TO CART</a>
+        <a class="buy" href="#">BUY NOW</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="product-visual">
+        <img class="beans" src="assets/beans-2.png" alt="Coffee beans">
+        <img class="pouch" src="assets/pouch-2.png" alt="Coffee pouch">
+      </div>
+      <div class="hint">TAP TO REVEAL THE BEANS</div>
+      <div class="product-name">Blend 02</div>
+      <div class="product-notes">Add your tasting notes here.</div>
+      <div class="actions">
+        <a href="#">ADD TO CART</a>
+        <a class="buy" href="#">BUY NOW</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="product-visual">
+        <img class="beans" src="assets/beans-3.png" alt="Coffee beans">
+        <img class="pouch" src="assets/pouch-3.png" alt="Coffee pouch">
+      </div>
+      <div class="hint">TAP TO REVEAL THE BEANS</div>
+      <div class="product-name">Blend 03</div>
+      <div class="product-notes">Add your tasting notes here.</div>
+      <div class="actions">
+        <a href="#">ADD TO CART</a>
+        <a class="buy" href="#">BUY NOW</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="product-visual">
+        <img class="beans" src="assets/beans-4.png" alt="Coffee beans">
+        <img class="pouch" src="assets/pouch-4.png" alt="Coffee pouch">
+      </div>
+      <div class="hint">TAP TO REVEAL THE BEANS</div>
+      <div class="product-name">Blend 04</div>
+      <div class="product-notes">Add your tasting notes here.</div>
+      <div class="actions">
+        <a href="#">ADD TO CART</a>
+        <a class="buy" href="#">BUY NOW</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="product-visual">
+        <img class="beans" src="assets/beans-5.png" alt="Coffee beans">
+        <img class="pouch" src="assets/pouch-5.png" alt="Coffee pouch">
+      </div>
+      <div class="hint">TAP TO REVEAL THE BEANS</div>
+      <div class="product-name">Blend 05</div>
+      <div class="product-notes">Add your tasting notes here.</div>
+      <div class="actions">
+        <a href="#">ADD TO CART</a>
+        <a class="buy" href="#">BUY NOW</a>
+      </div>
+    </div>
+
+    <div class="slide">
+      <div class="product-visual">
+        <img class="beans" src="assets/beans-6.png" alt="Coffee beans">
+        <img class="pouch" src="assets/pouch-6.png" alt="Coffee pouch">
+      </div>
+      <div class="hint">TAP TO REVEAL THE BEANS</div>
+      <div class="product-name">Blend 06</div>
+      <div class="product-notes">Add your tasting notes here.</div>
+      <div class="actions">
+        <a href="#">ADD TO CART</a>
+        <a class="buy" href="#">BUY NOW</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="navigation">
+    <button id="prev" aria-label="Previous product">‹</button>
+    <div class="dots" id="dots"></div>
+    <button id="next" aria-label="Next product">›</button>
+  </div>
+</div>
+
+<script>
+const track = document.getElementById("track");
+const slides = [...document.querySelectorAll(".slide")];
+const dotsContainer = document.getElementById("dots");
+let current = 0;
+
+slides.forEach((slide, index) => {
+  const dot = document.createElement("span");
+  dot.className = "dot" + (index === 0 ? " active" : "");
+  dotsContainer.appendChild(dot);
+
+  slide.querySelector(".product-visual").addEventListener("click", () => {
+    slide.querySelector(".product-visual").classList.toggle("revealed");
+  });
+});
+
+const dots = [...dotsContainer.children];
+
+function update(index) {
+  current = Math.max(0, Math.min(index, slides.length - 1));
+  track.scrollTo({ left: slides[current].offsetLeft, behavior: "smooth" });
+  dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+}
+
+document.getElementById("prev").addEventListener("click", () => update(current - 1));
+document.getElementById("next").addEventListener("click", () => update(current + 1));
+
+track.addEventListener("scroll", () => {
+  const index = Math.round(track.scrollLeft / track.clientWidth);
+  if (index !== current) {
+    current = index;
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+  }
+});
+</script>
+</body>
+</html>
