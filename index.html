@@ -17,18 +17,28 @@ body { font-family:'Red Hat Display',sans-serif; }
 .carousel::-webkit-scrollbar {display:none}
 .track {display:flex}
 .slide {flex:0 0 100%; min-width:0; scroll-snap-align:start; scroll-snap-stop:always; padding:11.25% 3.75% 7.2%; }
+/* All placement percentages below are traced from the supplied design screenshot. */
 .card {width:100%; aspect-ratio:1054/671; position:relative; isolation:isolate; background:rgba(255,244,223,.23); border-radius:12%; container-type:inline-size; }
 .card-border {position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:5; overflow:visible}
 .card-border rect {fill:none; stroke:rgba(0,0,0,.23); stroke-width:24; stroke-dasharray:24 23; stroke-linecap:butt}
+/* Shifted visual slightly right; balance the content within the card. */
 .visual {position:absolute; left:8%; top:12.9%; width:33.2%; height:71.2%; border:0; padding:0; background:transparent; cursor:pointer; z-index:2; }
 .visual img {position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:opacity .24s ease; }
 .visual .pouch {transform:scale(1.20);}
 .visual .bean {opacity:0; transform:scale(1.10)}
 .visual.revealed .pouch {opacity:0}
 .visual.revealed .bean {opacity:1}
+/* One aligned content column; the shorter height lifts the buttons. */
+/* One right-hand column: all three rows share exactly the same left edge. */
 .details { position:absolute; left:50%; top:15%; width:40%; height:67%; display:flex; flex-direction:column; align-items:stretch; text-align:left; pointer-events:none; }
-.heading { position:relative; width:100%; height:17%; flex:none; display:flex; align-items:center; justify-content:flex-start; gap:8%; }
-.name { font-family:'Rubik One',sans-serif; color:var(--blue); font-size:3.25cqw; font-weight:400; line-height:1; text-transform:uppercase; white-space:nowrap; }
+.heading { position:relative; width:100%; min-height:17%; height:auto; flex:none; display:flex; align-items:center; justify-content:space-between; gap:3%; }
+.heading.sticker-close { justify-content:flex-start; gap:5%; }
+.heading.sticker-close .name { flex:0 1 auto; }
+.heading.sticker-close .sticker { flex-shrink:0; }
+/* Roasts 3 and 5 remain provisional; the four other cards are approved. */
+.heading.sticker-extra-close { gap:0; }
+.heading.sticker-extra-close .sticker { margin-left:-5%; }
+.name { font-family:'Rubik One',sans-serif; color:var(--blue); font-size:3.25cqw; font-weight:400; line-height:1; text-transform:uppercase; white-space:normal; flex:1 1 auto; min-width:0; overflow-wrap:normal; }
 .sticker { position:relative; flex:0 0 27%; aspect-ratio:1; display:grid; place-items:center; transform:scale(1.48); }
 .sticker img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
 .price { position:relative; color:var(--brown); font-family:'Red Hat Display',sans-serif; font-size:1.65cqw; font-weight:700; }
@@ -45,82 +55,34 @@ body { font-family:'Red Hat Display',sans-serif; }
   <div class="track" id="track"></div>
 </main>
 <script>
+// Edit product names, descriptions and prices here whenever you like.
+// Replace the temporary image filenames when the other pouch and bean designs are ready.
 const products = [
   {name:'OAKWARD', price:850, description:'Woody and nutty, dark and intense. A smooth, comforting coffee with a rich finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
-  {name:'MEDIUM ROAST', price:850, description:'Chocolatey, caramel sweetness and nutty undertones with a gentle fruit lift.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
-  {name:'MEDIUM DARK', price:850, description:'Dark chocolate, toasted nuts and bittersweet caramel with a hint of spice.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
-  {name:'ROBUSTA', price:850, description:'Dark cocoa, earthy intensity and a nutty malt finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
-  {name:'70/30 BLEND', price:850, description:'Dark cocoa, toasted walnuts and a malty grain finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
-  {name:'MONSOON MALABAR', price:850, description:'Earthy, dark chocolate notes with a deep oak and cedar character.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'}
+  {name:'CHERRY CHERRY LADY', price:850, description:'Chocolatey, caramel sweetness and nutty undertones with a gentle fruit lift.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'SWEET BUT PSYCHO', price:850, description:'Dark chocolate, toasted nuts and bittersweet caramel with a hint of spice.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'BREW ON THE BRAIN', price:850, description:'Dark cocoa, earthy intensity and a nutty malt finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'BACK TO BLACK', price:850, description:'Dark cocoa, toasted walnuts and a malty grain finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'FIFTY SHADES OF BROWN', price:850, description:'Earthy, dark chocolate notes with a deep oak and cedar character.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'}
 ];
 const track=document.getElementById('track');
-function element(tag, className, text) {
-  const el=document.createElement(tag);
-  if(className)el.className=className;
-  if(text!==undefined)el.textContent=text;
-  return el;
-}
+function element(tag, className, text) { const el=document.createElement(tag); if(className)el.className=className; if(text!==undefined)el.textContent=text; return el; }
 products.forEach((product,i)=>{
-  const slide=element('section','slide');
-  slide.setAttribute('aria-label',`${i+1} of ${products.length}: ${product.name}`);
+  const slide=element('section','slide'); slide.setAttribute('aria-label',`${i+1} of ${products.length}: ${product.name}`);
   const card=element('article','card');
   const border=document.createElementNS('http://www.w3.org/2000/svg','svg');
-  border.setAttribute('viewBox','0 0 1054 671');
-  border.setAttribute('preserveAspectRatio','none');
-  border.classList.add('card-border');
+  border.setAttribute('viewBox','0 0 1054 671'); border.setAttribute('preserveAspectRatio','none'); border.classList.add('card-border');
   const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
-  rect.setAttribute('x','12');
-  rect.setAttribute('y','12');
-  rect.setAttribute('width','1030');
-  rect.setAttribute('height','647');
-  rect.setAttribute('rx','82');
-  rect.setAttribute('ry','82');
-  border.append(rect);
-
-  const visual=element('button','visual');
-  visual.type='button';
-  visual.setAttribute('aria-label',`Reveal coffee beans for ${product.name}`);
-  visual.setAttribute('aria-pressed','false');
-
-  for(const [kind,src] of [['bean',product.bean],['pouch',product.pouch]]) {
-    const img=element('img',kind);
-    img.src=encodeURI(src);
-    img.alt='';
-    img.draggable=false;
-    visual.append(img);
-  }
-
-  visual.addEventListener('click',()=>{
-    const shown=visual.classList.toggle('revealed');
-    visual.setAttribute('aria-pressed',String(shown));
-    visual.setAttribute('aria-label',shown?`Show pouch for ${product.name}`:`Reveal coffee beans for ${product.name}`);
-  });
-
-  const details=element('div','details');
-  const heading=element('div','heading');
-  heading.append(element('div','name',product.name));
-
-  const sticker=element('div','sticker');
-  const stickerImage=element('img');
-  stickerImage.src='price%20sticker.png';
-  stickerImage.alt='';
-  sticker.append(stickerImage,element('span','price',`₹${product.price}`));
-  heading.append(sticker);
-
+  rect.setAttribute('x','12'); rect.setAttribute('y','12'); rect.setAttribute('width','1030'); rect.setAttribute('height','647'); rect.setAttribute('rx','82'); rect.setAttribute('ry','82'); border.append(rect);
+  const visual=element('button','visual'); visual.type='button'; visual.setAttribute('aria-label',`Reveal coffee beans for ${product.name}`); visual.setAttribute('aria-pressed','false');
+  for(const [kind,src] of [['bean',product.bean],['pouch',product.pouch]]) { const img=element('img',kind); img.src=encodeURI(src); img.alt=''; img.draggable=false; visual.append(img); }
+  visual.addEventListener('click',()=>{const shown=visual.classList.toggle('revealed');visual.setAttribute('aria-pressed',String(shown));visual.setAttribute('aria-label',shown?`Show pouch for ${product.name}`:`Reveal coffee beans for ${product.name}`);});
+  const details=element('div','details'); const heading=element('div','heading'); if([0,2,4].includes(i)) heading.classList.add('sticker-close'); if([2,4].includes(i)) heading.classList.add('sticker-extra-close'); heading.append(element('div','name',product.name));
+  const sticker=element('div','sticker'); const stickerImage=element('img'); stickerImage.src='price%20sticker.png'; stickerImage.alt=''; sticker.append(stickerImage,element('span','price',`₹${product.price}`)); heading.append(sticker);
   const description=element('p','description',product.description);
   const actions=element('div','actions');
-
-  for(const label of ['ADD TO CART','BUY NOW']) {
-    const button=element('button','action',label);
-    button.type='button';
-    button.title='Shopify checkout will be connected later';
-    actions.append(button);
-  }
-
-  details.append(heading,description,actions);
-  card.append(visual,details,border);
-  slide.append(card);
-  track.append(slide);
+  for(const label of ['ADD TO CART','BUY NOW']) { const button=element('button','action',label); button.type='button'; button.title='Shopify checkout will be connected later'; actions.append(button); }
+  details.append(heading,description,actions); card.append(visual,details,border); slide.append(card); track.append(slide);
 });
 </script>
 </body>
