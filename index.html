@@ -2,271 +2,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kurozen Coffee</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kurozen Coffee — Beans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&family=Rubik+One&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: transparent;
-  color: #6C4637;
-}
-
-.carousel {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
-.track {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.track::-webkit-scrollbar { display: none; }
-
-.slide {
-  flex: 0 0 100%;
-  scroll-snap-align: center;
-  padding: 20px 18px;
-  text-align: center;
-}
-
-.product-visual {
-  height: 300px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.product-visual img {
-  position: absolute;
-  max-width: 85%;
-  max-height: 95%;
-  object-fit: contain;
-  transition: opacity 0.35s ease;
-}
-
-.beans { opacity: 0; }
-.product-visual.revealed .pouch { opacity: 0; }
-.product-visual.revealed .beans { opacity: 1; }
-
-.hint {
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  margin-top: 8px;
-  opacity: 0.7;
-}
-
-.product-name {
-  font-size: 25px;
-  margin: 12px 0 6px;
-  font-weight: 700;
-}
-
-.product-notes {
-  font-size: 13px;
-  line-height: 1.5;
-  max-width: 300px;
-  margin: 0 auto 18px;
-}
-
-.actions {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.actions a {
-  text-decoration: none;
-  padding: 12px 20px;
-  font-size: 12px;
-  letter-spacing: 1px;
-  border: 1px solid #6C4637;
-  color: #6C4637;
-}
-
-.actions .buy {
-  background: #6C4637;
-  color: white;
-}
-
-.navigation {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  padding: 8px 0 18px;
-}
-
-.navigation button {
-  border: 0;
-  background: none;
-  color: #6C4637;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.dots {
-  display: flex;
-  gap: 7px;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #c8b8ae;
-}
-
-.dot.active { background: #6C4637; }
-
-@media (max-width: 480px) {
-  .product-visual { height: 270px; }
-  .product-name { font-size: 23px; }
-}
+:root { --olive:#7c6d38; --cream:#fff4df; --brown:#6b4536; --blue:#d1e7fc; }
+* { box-sizing:border-box; }
+html,body { margin:0; background:var(--olive); }
+body { font-family:'Red Hat Display',sans-serif; }
+.carousel { width:100%; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; }
+.carousel::-webkit-scrollbar {display:none}
+.track {display:flex}
+.slide {flex:0 0 100%; min-width:0; scroll-snap-align:start; scroll-snap-stop:always; padding:11.25% 3.75% 7.2%; }
+.card {width:100%; aspect-ratio:1054/671; position:relative; isolation:isolate; background:rgba(255,244,223,.23); border-radius:12%; container-type:inline-size; }
+.card-border {position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:5; overflow:visible}
+.card-border rect {fill:none; stroke:rgba(0,0,0,.23); stroke-width:24; stroke-dasharray:24 23; stroke-linecap:butt}
+.visual {position:absolute; left:8%; top:12.9%; width:33.2%; height:71.2%; border:0; padding:0; background:transparent; cursor:pointer; z-index:2; }
+.visual img {position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:opacity .24s ease; }
+.visual .pouch {transform:scale(1.20);}
+.visual .bean {opacity:0; transform:scale(1.10)}
+.visual.revealed .pouch {opacity:0}
+.visual.revealed .bean {opacity:1}
+.details { position:absolute; left:50%; top:15%; width:40%; height:67%; display:flex; flex-direction:column; align-items:stretch; text-align:left; pointer-events:none; }
+.heading { position:relative; width:100%; height:17%; flex:none; display:flex; align-items:center; justify-content:flex-start; gap:8%; }
+.name { font-family:'Rubik One',sans-serif; color:var(--blue); font-size:3.25cqw; font-weight:400; line-height:1; text-transform:uppercase; white-space:nowrap; }
+.sticker { position:relative; flex:0 0 27%; aspect-ratio:1; display:grid; place-items:center; transform:scale(1.48); }
+.sticker img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.price { position:relative; color:var(--brown); font-family:'Red Hat Display',sans-serif; font-size:1.65cqw; font-weight:700; }
+.description { width:100%; margin:4% 0 0; color:var(--cream); font-size:2.2765cqw; font-weight:400; line-height:1.4; overflow-wrap:break-word; }
+.actions { width:70%; height:11%; display:flex; justify-content:flex-start; align-items:stretch; gap:7%; margin-top:auto; pointer-events:auto; }
+.action {appearance:none; border:0; border-radius:7px; background:var(--cream); color:var(--brown); font-family:'Red Hat Display',sans-serif; font-weight:700; font-size:1.45cqw; flex:1; height:100%; padding:0; white-space:nowrap; cursor:pointer; transition:background .16s,color .16s; }
+.action:hover,.action:active {background:var(--brown); color:var(--cream)}
+.action:focus-visible,.visual:focus-visible {outline:2px solid var(--blue); outline-offset:3px}
+@media(min-width:1100px) {.carousel {max-width:1140px; margin:auto}}
 </style>
 </head>
-
 <body>
-<div class="carousel">
-  <div class="track" id="track">
-
-    <div class="slide">
-      <div class="product-visual">
-        <img class="beans" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(7).png" alt="Coffee beans">
-        <img class="pouch" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(5).png" alt="Coffee pouch">
-      </div>
-      <div class="hint">TAP TO REVEAL THE BEANS</div>
-      <div class="product-name">Blend 01</div>
-      <div class="product-notes">Add your tasting notes here.</div>
-      <div class="actions">
-        <a href="#">ADD TO CART</a>
-        <a class="buy" href="#">BUY NOW</a>
-      </div>
-    </div>
-
-    <div class="slide">
-      <div class="product-visual">
-        <img class="beans" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(7).png" alt="Coffee beans">
-        <img class="pouch" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(5).png" alt="Coffee pouch">
-      </div>
-      <div class="hint">TAP TO REVEAL THE BEANS</div>
-      <div class="product-name">Blend 02</div>
-      <div class="product-notes">Add your tasting notes here.</div>
-      <div class="actions">
-        <a href="#">ADD TO CART</a>
-        <a class="buy" href="#">BUY NOW</a>
-      </div>
-    </div>
-
-    <div class="slide">
-      <div class="product-visual">
-        <img class="beans" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(7).png" alt="Coffee beans">
-        <img class="pouch" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(5).png" alt="Coffee pouch">
-      </div>
-      <div class="hint">TAP TO REVEAL THE BEANS</div>
-      <div class="product-name">Blend 03</div>
-      <div class="product-notes">Add your tasting notes here.</div>
-      <div class="actions">
-        <a href="#">ADD TO CART</a>
-        <a class="buy" href="#">BUY NOW</a>
-      </div>
-    </div>
-
-    <div class="slide">
-      <div class="product-visual">
-        <img class="beans" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(7).png" alt="Coffee beans">
-        <img class="pouch" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(5).png" alt="Coffee pouch">
-      </div>
-      <div class="hint">TAP TO REVEAL THE BEANS</div>
-      <div class="product-name">Blend 04</div>
-      <div class="product-notes">Add your tasting notes here.</div>
-      <div class="actions">
-        <a href="#">ADD TO CART</a>
-        <a class="buy" href="#">BUY NOW</a>
-      </div>
-    </div>
-
-    <div class="slide">
-      <div class="product-visual">
-        <img class="beans" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(7).png" alt="Coffee beans">
-        <img class="pouch" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(5).png" alt="Coffee pouch">
-      </div>
-      <div class="hint">TAP TO REVEAL THE BEANS</div>
-      <div class="product-name">Blend 05</div>
-      <div class="product-notes">Add your tasting notes here.</div>
-      <div class="actions">
-        <a href="#">ADD TO CART</a>
-        <a class="buy" href="#">BUY NOW</a>
-      </div>
-    </div>
-
-    <div class="slide">
-      <div class="product-visual">
-        <img class="beans" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(7).png" alt="Coffee beans">
-        <img class="pouch" src="Shop%20Premium%20And%20High%20Quality%20Beans.%20(5).png" alt="Coffee pouch">
-      </div>
-      <div class="hint">TAP TO REVEAL THE BEANS</div>
-      <div class="product-name">Blend 06</div>
-      <div class="product-notes">Add your tasting notes here.</div>
-      <div class="actions">
-        <a href="#">ADD TO CART</a>
-        <a class="buy" href="#">BUY NOW</a>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="navigation">
-    <button id="prev" aria-label="Previous product">‹</button>
-    <div class="dots" id="dots"></div>
-    <button id="next" aria-label="Next product">›</button>
-  </div>
-</div>
-
+<main class="carousel" aria-label="Kurozen coffee beans" id="carousel">
+  <div class="track" id="track"></div>
+</main>
 <script>
-const track = document.getElementById("track");
-const slides = [...document.querySelectorAll(".slide")];
-const dotsContainer = document.getElementById("dots");
-let current = 0;
-
-slides.forEach((slide, index) => {
-  const dot = document.createElement("span");
-  dot.className = "dot" + (index === 0 ? " active" : "");
-  dotsContainer.appendChild(dot);
-
-  slide.querySelector(".product-visual").addEventListener("click", () => {
-    slide.querySelector(".product-visual").classList.toggle("revealed");
-  });
-});
-
-const dots = [...dotsContainer.children];
-
-function update(index) {
-  current = Math.max(0, Math.min(index, slides.length - 1));
-  track.scrollTo({ left: slides[current].offsetLeft, behavior: "smooth" });
-  dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+const products = [
+  {name:'OAKWARD', price:850, description:'Woody and nutty, dark and intense. A smooth, comforting coffee with a rich finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'MEDIUM ROAST', price:850, description:'Chocolatey, caramel sweetness and nutty undertones with a gentle fruit lift.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'MEDIUM DARK', price:850, description:'Dark chocolate, toasted nuts and bittersweet caramel with a hint of spice.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'ROBUSTA', price:850, description:'Dark cocoa, earthy intensity and a nutty malt finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'70/30 BLEND', price:850, description:'Dark cocoa, toasted walnuts and a malty grain finish.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'},
+  {name:'MONSOON MALABAR', price:850, description:'Earthy, dark chocolate notes with a deep oak and cedar character.', pouch:'Shop Premium And High Quality Beans. (5).png', bean:'Shop Premium And High Quality Beans. (7).png'}
+];
+const track=document.getElementById('track');
+function element(tag, className, text) {
+  const el=document.createElement(tag);
+  if(className)el.className=className;
+  if(text!==undefined)el.textContent=text;
+  return el;
 }
+products.forEach((product,i)=>{
+  const slide=element('section','slide');
+  slide.setAttribute('aria-label',`${i+1} of ${products.length}: ${product.name}`);
+  const card=element('article','card');
+  const border=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  border.setAttribute('viewBox','0 0 1054 671');
+  border.setAttribute('preserveAspectRatio','none');
+  border.classList.add('card-border');
+  const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+  rect.setAttribute('x','12');
+  rect.setAttribute('y','12');
+  rect.setAttribute('width','1030');
+  rect.setAttribute('height','647');
+  rect.setAttribute('rx','82');
+  rect.setAttribute('ry','82');
+  border.append(rect);
 
-document.getElementById("prev").addEventListener("click", () => update(current - 1));
-document.getElementById("next").addEventListener("click", () => update(current + 1));
+  const visual=element('button','visual');
+  visual.type='button';
+  visual.setAttribute('aria-label',`Reveal coffee beans for ${product.name}`);
+  visual.setAttribute('aria-pressed','false');
 
-track.addEventListener("scroll", () => {
-  const index = Math.round(track.scrollLeft / track.clientWidth);
-  if (index !== current) {
-    current = index;
-    dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+  for(const [kind,src] of [['bean',product.bean],['pouch',product.pouch]]) {
+    const img=element('img',kind);
+    img.src=encodeURI(src);
+    img.alt='';
+    img.draggable=false;
+    visual.append(img);
   }
+
+  visual.addEventListener('click',()=>{
+    const shown=visual.classList.toggle('revealed');
+    visual.setAttribute('aria-pressed',String(shown));
+    visual.setAttribute('aria-label',shown?`Show pouch for ${product.name}`:`Reveal coffee beans for ${product.name}`);
+  });
+
+  const details=element('div','details');
+  const heading=element('div','heading');
+  heading.append(element('div','name',product.name));
+
+  const sticker=element('div','sticker');
+  const stickerImage=element('img');
+  stickerImage.src='price%20sticker.png';
+  stickerImage.alt='';
+  sticker.append(stickerImage,element('span','price',`₹${product.price}`));
+  heading.append(sticker);
+
+  const description=element('p','description',product.description);
+  const actions=element('div','actions');
+
+  for(const label of ['ADD TO CART','BUY NOW']) {
+    const button=element('button','action',label);
+    button.type='button';
+    button.title='Shopify checkout will be connected later';
+    actions.append(button);
+  }
+
+  details.append(heading,description,actions);
+  card.append(visual,details,border);
+  slide.append(card);
+  track.append(slide);
 });
 </script>
 </body>
